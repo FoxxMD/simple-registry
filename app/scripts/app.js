@@ -4,9 +4,10 @@ angular.module('simpleRegistryApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'ngRoute'
+  'ngRoute',
+  'restangular'
 ])
-  .config(function ($routeProvider, $locationProvider, $httpProvider) {
+  .config(function ($routeProvider, $locationProvider, $httpProvider, RestangularProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'partials/main',
@@ -30,6 +31,8 @@ angular.module('simpleRegistryApp', [
       });
       
     $locationProvider.html5Mode(true);
+
+    RestangularProvider.setBaseUrl('/api');
       
     // Intercept 401s and redirect you to login
     $httpProvider.interceptors.push(['$q', '$location', function($q, $location) {

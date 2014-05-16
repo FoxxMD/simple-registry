@@ -1,5 +1,5 @@
 # simple-registry
-## A simple gift registry for your guests
+### A simple gift registry for your guests
 
 # Why?
 
