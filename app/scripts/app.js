@@ -10,8 +10,8 @@ angular.module('simpleRegistryApp', [
   .config(function ($routeProvider, $locationProvider, $httpProvider, RestangularProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'partials/main',
-        controller: 'MainCtrl'
+        template: '<div mainctrl></div>'//,
+/*        controller: 'MainCtrl'*/
       })
       .when('/login', {
         templateUrl: 'partials/login',
