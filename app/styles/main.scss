@@ -1,3 +1,5 @@
+@import "nav.scss";
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -7,8 +9,8 @@
 
 /* Space out content a bit */
 body {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  //padding-top: 20px;
+  //padding-bottom: 20px;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -90,6 +92,7 @@ body {
   overflow: hidden;
   height: 70px;
   position: relative;
+  z-index:50;
   width: 100%;
   margin-bottom: 30px;
   -webkit-transition: height 0.5s cubic-bezier(0.7, 0, 0.3, 1);
