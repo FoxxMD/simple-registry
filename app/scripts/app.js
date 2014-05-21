@@ -4,14 +4,14 @@ angular.module('simpleRegistryApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'ngRoute',
+  'ui.router',
   'restangular'
 ])
-  .config(function ($routeProvider, $locationProvider, $httpProvider, RestangularProvider) {
-    $routeProvider
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, RestangularProvider) {
+/*    $routeProvider
       .when('/', {
-        template: '<div mainctrl></div>'//,
-/*        controller: 'MainCtrl'*/
+        template: ''//,
+*//*        controller: 'MainCtrl'*//*
       })
       .when('/login', {
         templateUrl: 'partials/login',
@@ -28,14 +28,24 @@ angular.module('simpleRegistryApp', [
       })
       .otherwise({
         redirectTo: '/'
-      });
-      
+      });*/
+        $stateProvider
+            .state('index',{
+                url:'/',
+                template:''
+            })
+            .state('login',{
+                url:'/login',
+                templateUrl:'partials/login.html'
+            });
+
+    $urlRouterProvider.otherwise('index');
     $locationProvider.html5Mode(true);
 
     RestangularProvider.setBaseUrl('/api');
       
     // Intercept 401s and redirect you to login
-    $httpProvider.interceptors.push(['$q', '$location', function($q, $location) {
+    $httpProvider.interceptors.push(['$q','$location', function($q, $location) {
       return {
         'responseError': function(response) {
           if(response.status === 401) {
@@ -49,12 +59,12 @@ angular.module('simpleRegistryApp', [
       };
     }]);
   })
-  .run(function ($rootScope, $location, Auth) {
+  .run(function ($rootScope, $state, Auth) {
 
     // Redirect to login if route requires auth and you're not logged in
-    $rootScope.$on('$routeChangeStart', function (event, next) {
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
       
-      if (next.authenticate && !Auth.isLoggedIn()) {
+      if (toState.authenticate && !Auth.isLoggedIn()) {
         $location.path('/login');
       }
     });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('simpleRegistryApp')
-  .factory('Auth', function Auth($location, $rootScope, Session, User, $cookieStore) {
+  .factory('Auth', function Auth($state, $rootScope, Session, User, $cookieStore) {
     
     // Get currentUser from cookie
     $rootScope.currentUser = $cookieStore.get('user') || null;
