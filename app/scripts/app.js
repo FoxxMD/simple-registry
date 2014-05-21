@@ -5,38 +5,31 @@ angular.module('simpleRegistryApp', [
   'ngResource',
   'ngSanitize',
   'ui.router',
-  'restangular'
+  'restangular',
+  'ngAnimate'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, RestangularProvider) {
-/*    $routeProvider
-      .when('/', {
-        template: ''//,
-*//*        controller: 'MainCtrl'*//*
-      })
-      .when('/login', {
-        templateUrl: 'partials/login',
-        controller: 'LoginCtrl'
-      })
-      .when('/signup', {
-        templateUrl: 'partials/signup',
-        controller: 'SignupCtrl'
-      })
-      .when('/settings', {
-        templateUrl: 'partials/settings',
-        controller: 'SettingsCtrl',
-        authenticate: true
-      })
-      .otherwise({
-        redirectTo: '/'
-      });*/
         $stateProvider
             .state('index',{
                 url:'/',
-                template:''
+                templateUrl:'partials/profile.html',
+                controller:'ProfileCtrl'
+
             })
             .state('login',{
                 url:'/login',
-                templateUrl:'partials/login.html'
+                templateUrl:'partials/login.html',
+                controller:'LoginCtrl'
+            })
+            .state('signup',{
+                url:'/signup',
+                templateUrl:'partials/signup.html',
+                controller:'SignupCtrl'
+            }).
+        state('settings',{
+                url:'/settings',
+                templateUrl:'partials/settings.html',
+                controller:'SettingsCtrl'
             });
 
     $urlRouterProvider.otherwise('index');

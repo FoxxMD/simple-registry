@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('simpleRegistryApp')
-  .controller('LoginCtrl', function ($scope, Auth, $location) {
+  .controller('LoginCtrl', function ($scope, Auth, $state) {
     $scope.user = {};
     $scope.errors = {};
 
@@ -15,7 +15,7 @@ angular.module('simpleRegistryApp')
         })
         .then( function() {
           // Logged in, redirect to home
-          $location.path('/');
+          $state.go('index');
         })
         .catch( function(err) {
           err = err.data;

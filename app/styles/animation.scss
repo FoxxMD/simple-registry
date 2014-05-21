@@ -1,0 +1,25 @@
+.navPanePanel.ng-enter, .navPanePanel.ng-leave{
+  transition:all .2s ease-in-out;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top:0;
+  bottom:0;
+}
+
+.navPanePanel.ng-enter{
+  transition-delay: 0.2s;
+  opacity: 0;
+}
+
+.navPanePanel.ng-enter-active{
+  opacity: 1;
+}
+
+.navPanePanel.ng-leave{
+  opacity: 1;
+}
+
+.navPanePanel.ng-leave-active{
+  opacity: 0;
+}

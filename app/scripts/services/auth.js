@@ -58,14 +58,21 @@ angular.module('simpleRegistryApp')
       createUser: function(user, callback) {
         var cb = callback || angular.noop;
 
-        return User.save(user,
+          return User.post(user).then(function(){
+              $rootScope.currentUser = user;
+              return cb(user);
+          }, function(err){
+              return cb(err);
+          });
+
+/*        return User.save(user,
           function(user) {
             $rootScope.currentUser = user;
             return cb(user);
           },
           function(err) {
             return cb(err);
-          }).$promise;
+          }).$promise;*/
       },
 
       /**
@@ -79,14 +86,14 @@ angular.module('simpleRegistryApp')
       changePassword: function(oldPassword, newPassword, callback) {
         var cb = callback || angular.noop;
 
-        return User.update({
+        return User.one('me').put({
           oldPassword: oldPassword,
           newPassword: newPassword
-        }, function(user) {
+        }).then(function() {
           return cb(user);
         }, function(err) {
           return cb(err);
-        }).$promise;
+        });
       },
 
       /**
@@ -95,7 +102,8 @@ angular.module('simpleRegistryApp')
        * @return {Object} user
        */
       currentUser: function() {
-        return User.get();
+        return User.one('me').get();
+        //return User.get();
       },
 
       /**

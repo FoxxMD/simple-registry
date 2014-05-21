@@ -5,7 +5,7 @@ angular.module('simpleRegistryApp')
     $scope.logout = function() {
       Auth.logout()
       .then(function() {
-        $state.go('/login');
+        $state.go('login');
       });
     };
     
