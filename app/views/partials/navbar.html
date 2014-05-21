@@ -1,11 +1,11 @@
 <div id="menu-2" ng-controller="NavbarCtrl">
     <h3 class="text-muted">Simple Registry</h3>
   <ul>
-    <li ng-hide="currentUser" ng-class="{active: isActive('login')}"><a ui-sref="login">Login</a></li>
-    <li ng-hide="currentUser" ng-class="{active: isActive('signup')}"><a ui-sref="signup">Sign up</a></li>
-    <li ng-show="currentUser" ng-class="{active: isActive('logout')}"><a href="#" ng-click="logout()">Logout</a></li>
-    <li ng-show="currentUser" ng-class="{active: isActive('settings')}"><a ui-sref="settings">Settings</a></li>
-    <li ng-class="{active: isActive('about')}"><a ui-sref="about">About</a></li>
+    <li ng-hide="currentUser" ng-class="{active: isActive('login')}"><a ui-sref="login"><i class="fa fa-arrow-right fa-fw"></i>&nbsp; Login</a></li>
+    <li ng-hide="currentUser" ng-class="{active: isActive('signup')}"><a ui-sref="signup"><i class="fa fa-pencil-square-o fa-fw"></i>&nbsp; Sign up</a></li>
+    <li ng-show="currentUser" ng-class="{active: isActive('logout')}"><a href="#" ng-click="logout()"><i class="fa fa-arrow-left fa-fw"></i>&nbsp; Logout</a></li>
+    <li ng-show="currentUser" ng-class="{active: isActive('settings')}"><a ui-sref="settings"><i class="fa fa-gears fa-fw"></i>&nbsp; Settings</a></li>
+    <li ng-class="{active: isActive('about')}"><a ui-sref="about"><i class="fa fa-question fa-fw"></i>&nbsp;About</a></li>
   </ul>
     <div style="position:relative">
         <div class="navPanePanel" ui-view></div>
