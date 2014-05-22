@@ -41,7 +41,7 @@ angular.module('simpleRegistryApp')
                     }
                 };
                 $(element).on('click', '.initialButton', function (event) {
-                    var giftbox = $(this.parentElement);
+                    var giftbox = $(this.parentElement.parentElement);
                     if (giftbox.hasClass('expanded')) {
                         giftbox.css('height', '70px');
                         giftbox.removeClass('expanded');

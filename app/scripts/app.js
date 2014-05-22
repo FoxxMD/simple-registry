@@ -6,7 +6,8 @@ angular.module('simpleRegistryApp', [
   'ngSanitize',
   'ui.router',
   'restangular',
-  'ngAnimate'
+  'ngAnimate',
+    'xeditable'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, RestangularProvider) {
         $stateProvider
