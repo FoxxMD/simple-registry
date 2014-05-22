@@ -5,6 +5,7 @@ angular.module('simpleRegistryApp')
     
     // Get currentUser from cookie
     $rootScope.currentUser = $cookieStore.get('user') || null;
+    $rootScope.isAdmin = $rootScope.currentUser === null ? false : $rootScope.currentUser.role === 'admin';
     $cookieStore.remove('user');
 
     return {
@@ -24,6 +25,7 @@ angular.module('simpleRegistryApp')
           password: user.password
         }, function(user) {
           $rootScope.currentUser = user;
+          $rootScope.isAdmin = $rootScope.currentUser.role === 'admin';
           return cb();
         }, function(err) {
           return cb(err);
@@ -41,6 +43,7 @@ angular.module('simpleRegistryApp')
 
         return Session.delete(function() {
             $rootScope.currentUser = null;
+            $rootScope.isAdmin = false;
             return cb();
           },
           function(err) {

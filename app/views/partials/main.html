@@ -1,31 +1,45 @@
 <div class="st-menu st-effect-2" ng-include="'partials/navbar'"></div>
 <div class="st-pusher">
     <div class="st-content">
-    <button type="button" ng-click="toggleMenu()" class="btn btn-primary">Open Menu</button>
-    <div class="container">
-        <h1 class="text-center">Simple Registry</h1>
-        <p class="lead text-center">Helping your guests register for gifts, easily.</p>
-        <ul class="list-unstyled">
-            <li class="giftbox" ng-repeat="gift in gifts">
-                <button type="button" class="btn btn-primary initialButton">{{gift.name}}</button>
-                <div class="gift-content">
-                    <button type="button" class="btn btn-primary button-clone">{{gift.name}}</button>
-                    <div class="gift">
-                        <div class="row">
-                            <div class="col-md-3">
+        <a href="#" ng-click="toggleMenu()" class="menuButton"><i class="fa fa-bars fa-3x"></i></a>
 
-                            </div>
+        <div class="container">
+            <h1 class="text-center">Simple Registry</h1>
 
-                            <div class="col-md-9">
-                                <p class="lead">{{gift.description}}</p>
+            <p class="lead text-center">Helping your guests register for gifts, easily.</p>
 
-                                <p class="pull-right"><a target="_blank" ng-href="{{gift.url}}">See The Product</a></p>
+            <div class="itemContainer">
+                <div class="filterPane">
+                    <a class="pull-right" ng-class="{'active':selectedFilter == 'All'}" ng-click="selectedFilter = 'All'" href="#">All</a><br/>
+                    <a class="pull-right" ng-class="{'active':selectedFilter == 'Yours'}" ng-click="selectedFilter = 'Yours'" href="#">Yours</a><br/>
+                    <a class="pull-right" ng-class="{'active':selectedFilter == 'Unclaimed'}" ng-click="selectedFilter = 'Unclaimed'" href="#">Unclaimed</a><br/>
+                </div>
+                <ul class="list-unstyled">
+                    <li ng-if="isAdmin" class="giftbox">
+                        <button type="button" class="btn btn-primary initialButton new">Create New Item<i class="fa fa-plus-square fa-3x"></i></button>
+                    </li>
+                    <li class="giftbox" ng-repeat="gift in gifts | filter:giftFilter">
+                        <button type="button" class="btn btn-primary initialButton"><h4 class="pull-left">{{gift.name}}</h4> <h4 ng-show="gift.owner !== undefined" class="pull-right">Claimed</h4></button>
+                        <div class="gift-content">
+                            <button type="button" class="btn btn-primary button-clone">{{gift.name}}</button>
+                            <div class="gift">
+                                <div class="row">
+                                    <div class="col-md-3">
+
+                                    </div>
+
+                                    <div class="col-md-9">
+                                        <p class="lead">{{gift.description}}</p>
+
+                                        <p class="pull-right"><a target="_blank" ng-href="{{gift.url}}">See The
+                                            Product</a></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
