@@ -14,7 +14,7 @@ This app is based on [Angular-Fullstack](https://github.com/DaftMonk/generator-a
 To get simple-registry running locally do the following
 
 1. clone the repo
-2. run `npm install` to install dependencies
+2. run `npm install` and `bower install` to install dependencies
 3. run `grunt serv` to run the server with development settings
 
 # Deployment?
