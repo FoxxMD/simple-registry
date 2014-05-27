@@ -22,12 +22,12 @@
                         <button type="button" class="btn btn-primary initialButton new">Create New Item<i
                                 class="fa fa-plus-square fa-3x"></i></button>
                     </li>
-                    <li class="giftbox" ng-repeat="gift in gifts | filter:giftFilter">
+                    <li class="giftbox" ng-repeat="gift in gifts"> <!--| filter:giftFilter-->
                         <form editable-form name="giftForm">
                             <button type="button" class="btn btn-primary initialButton"><h4 class="pull-left"
                                                                                             editable-text="gift.name"
                                                                                             e-name="name" e-required>
-                                {{gift.name}}</h4> <h4 ng-show="gift.owner !== undefined" class="pull-right">
+                                {{gift.name || 'empty name'}}</h4> <h4 ng-show="gift.owner !== undefined" class="pull-right">
                                 Claimed</h4></button>
                             <div class="gift-content">
                                 <button type="button" class="btn btn-primary button-clone">{{gift.name}}</button>
@@ -39,11 +39,11 @@
 
                                             <h4 class="pull-left"><a target="_blank" ng-href="{{gift.url}}">See The
                                                 Product</a></h4>
-                                            <button ng-show="gift.owner == undefined && !isAdmin"
+                                            <button type="button" ng-show="gift.owner == undefined && !isAdmin"
                                                     class="btn btn-success pull-right">Claim This!
                                             </button>
-                                            <button ng-show="gift.owner == undefined && isAdmin"
-                                                    ng-click="giftForm.$show();" ng-hide="giftForm.$visible"
+                                            <button type="button" ng-show="gift.owner == undefined && isAdmin"
+                                                    ng-click="giftForm.$show()" ng-hide="giftForm.$visible"
                                                     class="btn btn-info pull-right">Edit This
                                             </button>
                                         </div>

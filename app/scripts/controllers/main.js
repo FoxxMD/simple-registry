@@ -23,7 +23,10 @@ angular.module('simpleRegistryApp')
                         case 'Unclaimed':
                             return gift.owner === undefined;
                     }
-                }
+                };
+                $scope.showForm = function(theForm){
+                    this.giftForm.$show();
+                };
 
             },
             link: function (scope, element, attrs) {
