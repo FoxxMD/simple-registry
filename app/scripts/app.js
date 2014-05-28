@@ -36,7 +36,13 @@ angular.module('simpleRegistryApp', [
     $urlRouterProvider.otherwise('index');
     $locationProvider.html5Mode(true);
 
+    //set the base url for the api path
     RestangularProvider.setBaseUrl('/api');
+
+    //configure restangular to use mongoDB's default id property
+    RestangularProvider.setRestangularFields({
+        id: "_id"
+    });
       
     // Intercept 401s and redirect you to login
     $httpProvider.interceptors.push(['$q','$location', function($q, $location) {
@@ -53,7 +59,7 @@ angular.module('simpleRegistryApp', [
       };
     }]);
   })
-  .run(function ($rootScope, $state, Auth) {
+  .run(function ($rootScope, $state, Auth, editableOptions, editableThemes) {
 
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
@@ -62,4 +68,7 @@ angular.module('simpleRegistryApp', [
         $location.path('/login');
       }
     });
+
+    //set xeditable theming options
+    editableOptions.theme = 'bs3';
   });

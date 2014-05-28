@@ -6,7 +6,9 @@ angular.module('simpleRegistryApp')
             restrict: 'AE',
             templateUrl: 'partials/main',
             controller: function ($scope) {
-                $scope.gifts = Gift.getList().$object;
+                Gift.getList().then(function(gifts){
+                    $scope.gifts = gifts;
+                });
                 $scope.selectedFilter = 'All';
 
                 $scope.giftFilter = function (gift) {
@@ -24,10 +26,27 @@ angular.module('simpleRegistryApp')
                             return gift.owner === undefined;
                     }
                 };
-                $scope.showForm = function(theForm){
-                    this.giftForm.$show();
+                $scope.saveGift = function(){
+                        this.gift.save();
                 };
+                $scope.claimGift = function(){
+                    var that = this;
+                    this.gift.post('claim',this.gift).then(function() {
+                        that.gift.showContactForm = false;
+                    }, function(err) {
+                        return err;
+                    });
+                };
+                $scope.deleteGift = function(){
+                    var that = this;
+                    this.gift.remove().then(function(){
+                        $scope.gifts.splice($scope.gifts.indexOf(that.gift),1);
+                    },
+                    function(err){
+                        console.log('[ERROR] ' + err);
+                    });
 
+                };
             },
             link: function (scope, element, attrs) {
                 scope.toggleMenu = function () {
@@ -44,15 +63,38 @@ angular.module('simpleRegistryApp')
                     }
                 };
                 $(element).on('click', '.initialButton', function (event) {
-                    var giftbox = $(this.parentElement.parentElement);
-                    if (giftbox.hasClass('expanded')) {
-                        giftbox.css('height', '70px');
-                        giftbox.removeClass('expanded');
+                    var giftbox = $(event.currentTarget).closest('.giftbox');
+                    if(giftbox.attr('style')) {
+                        giftbox.removeAttr('style');
                     }
                     else {
                         giftbox.css('height', (giftbox.height() + giftbox.find('.gift').outerHeight()));
-                        giftbox.addClass('expanded');
                     }
+                });
+                scope.createGift = function(){
+                    var that = this;
+                    Gift.post(this.newGiftForm.$data).then(function(newgift){
+                        $(element).find('.creationBox').removeAttr('style');
+                        that.newGiftForm.name = null;
+                        that.newGiftForm.description = null;
+                        that.newGiftForm.url = null;
+                        scope.gifts.unshift(newgift);
+                        return false;
+                    }, function(error){
+                        return error;
+                    });
+                };
+                scope.checkForUser = function(event){
+                    if(!$rootScope.currentUser){
+                        this.gift.tryRegister = true;
+                    }
+                };
+                $(element).on('click', '.buttonPaneChange', function(event){
+                    var giftbox = $(event.currentTarget).closest('.giftbox');
+                    $timeout(function(){
+                        giftbox.css('height', (70 + giftbox.find('.activePane .gift').outerHeight()));
+                    },0);
+
                 });
             }
         }
