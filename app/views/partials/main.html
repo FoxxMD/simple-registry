@@ -55,16 +55,16 @@
                             </div>
                         </form>
                     </li>
-                    <li class="giftbox" ng-repeat="gift in gifts"> <!--| filter:giftFilter-->
+                    <li class="giftbox" ng-repeat="gift in gifts | filter:giftFilter">
                         <form editable-form name="giftForm" onaftersave="saveGift()">
                             <button type="button" class="btn btn-primary initialButton">
                                 <h4 class="pull-left"
                                     editable-text="gift.name"
                                     e-name="name" e-required>
                                     {{gift.name || 'empty name'}}</h4>
-                                <h4 ng-show="gift.owner !== undefined && !gift.showContactForm" class="pull-right"> Claimed</h4>
+                                <h4 ng-show="gift.isClaimed && !showContactForm" class="pull-right"> Claimed</h4>
                             </button>
-                            <div ng-class="{'activePane': !gift.tryRegister && !gift.showContactForm}" class="gift-content">
+                            <div ng-class="{'activePane': !gift.showContactForm}" class="gift-content">
                                 <div class="gift">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -85,7 +85,7 @@
                                                     ng-click="giftForm.$show()"
                                                     class="btn btn-info">Edit This
                                             </button>
-                                                <button type="button" ng-click="checkForUser($event)" ng-show="gift.owner == undefined && !isAdmin"
+                                                <button type="button" ng-click="checkForUser($event)" ng-show="!gift.isClaimed && !isAdmin"
                                                         class="btn btn-success buttonPaneChange">Claim This!
                                                 </button>
                                                 </span>
@@ -106,50 +106,48 @@
                             </div>
                         </form>
                         <form editable-form name="contactForm" onbeforesave="claimGift()">
-                        <div ng-class="{'activePane': gift.tryRegister}" class="gift-content">
-                            <div class="gift">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h4>Wait! Consider creating an account, look at all these benefits you get.</h4>
-                                        <ul>
-                                            <li>View your claimed gifts later</li>
-                                            <li>Saved contact information so you don't have to re-input for every gift</li>
-                                            <li>Edit your contact information after claiming a gift</li>
-                                        </ul>
-                                        <h4>Would you like to create an account?</h4>
-                                    </div>
-                                    <div class="col-md-12" style="margin-top:20px;">
-                                            <span class="pull-right">
-                                                <button type="button" class="btn btn-primary">Yes</button>
-                                                <button type="button" ng-click="contactForm.$show(); gift.showContactForm = true; gift.tryRegister = false; gift.owner = {};" class="btn btn-default buttonPaneChange">No, just claim this gift</button>
-                                            </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div ng-class="{'activePane': gift.showContactForm}" class="gift-content">
-                            <div class="gift">
-
-
+                            <div ng-class="{'activePane': showContactForm}" class="gift-content">
+                                <div class="gift">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <span editable-text="gift.owner.name" e-required e-name="Name" e-placeholder="Your Name">{{gift.owner.name}}</span><br/>
-                                            <span editable-text="gift.owner.email" e-required e-name="Email" e-placeholder="Your Email Address">{{gift.owner.email}}</span>
+                                            <div style="padding:5px 0">
+                                                <span editable-text="gift.owner.name" e-required e-name="Name" e-placeholder="Your Name">{{gift.owner.name}}</span>
+                                            </div>
+                                            <div style="padding:5px 0">
+                                                <span editable-email="gift.owner.email" e-required e-name="Email" e-placeholder="Your Email Address">{{gift.owner.email}}</span>
+                                            </div>
+                                            <div style="padding:5px 0" ng-show="isRegistering">
+                                                <span editable-text="contactForm.password" e-name="Password" e-type="password" e-placeholder="Password" onbeforesave="tryRegister($data)"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>
+                                                <input type="checkbox" class="buttonPaneChange" ng-model="isRegistering"/> Create Account? <a href="#" class="buttonPaneChange"
+                                                                                                                                             ng-click="showRegisterWhy = true">Why?</a>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-12 collapsed" ng-class="{'expanded': showRegisterWhy}">
+                                            <p>When you register you get these benefits:</p>
+                                            <ul>
+                                                <li>View your claimed gifts later</li>
+                                                <li>Saved contact information so you don't have to re-input for every gift</li>
+                                                <li>Edit your contact information after claiming a gift</li>
+                                            </ul>
                                         </div>
                                         <div class="col-md-12" style="margin-top:20px;">
                                            <span class="pull-right" ng-show="contactForm.$visible">
                                             <button type="submit" class="btn btn-primary buttonPaneChange" ng-disabled="contactForm.$waiting">
-                                                Save
+                                                Claim
                                             </button>
-                                            <button type="button" class="btn btn-default buttonPaneChange" ng-disabled="contactForm.$waiting" ng-click="contactForm.$cancel(); gift.showContactForm = false;">
+                                            <button type="button" class="btn btn-default buttonPaneChange" ng-disabled="contactForm.$waiting"
+                                                    ng-click="contactForm.$cancel(); gift.owner = undefined; showContactForm = false;">
                                                 Cancel
                                             </button>
                                             </span>
                                         </div>
                                     </div>
-
+                                </div>
                             </div>
-                        </div>
                         </form>
                     </li>
                 </ul>

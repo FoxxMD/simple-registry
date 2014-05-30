@@ -61,9 +61,9 @@ angular.module('simpleRegistryApp')
       createUser: function(user, callback) {
         var cb = callback || angular.noop;
 
-          return User.post(user).then(function(){
-              $rootScope.currentUser = user;
-              return cb(user);
+          return User.post(user).then(function(returnedUser){
+              $rootScope.currentUser = returnedUser;
+              return cb(returnedUser);
           }, function(err){
               return cb(err);
           });

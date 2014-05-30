@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('simpleRegistryApp')
-    .directive('mainctrl', ['Gift', '$timeout', '$rootScope', function (Gift, $timeout, $rootScope) {
+    .directive('mainctrl', ['Gift', '$timeout', '$rootScope','Auth', function (Gift, $timeout, $rootScope, Auth) {
         return {
             restrict: 'AE',
             templateUrl: 'partials/main',
@@ -16,14 +16,15 @@ angular.module('simpleRegistryApp')
                         case 'All':
                             return true;
                         case 'Yours':
-                            if (gift.owner !== undefined && gift.owner.user !== undefined) {
-                                return gift.owner.user.id == $rootScope.currentUser.id;
+                            if (!gift.isClaimed) {
+                                //TODO make this work once user actually works
+                                return gift.owner.user == $rootScope.currentUser.id;
                             }
                             else {
                                 return false;
                             }
                         case 'Unclaimed':
-                            return gift.owner === undefined;
+                            return !gift.isClaimed;
                     }
                 };
                 $scope.saveGift = function(){
@@ -31,11 +32,31 @@ angular.module('simpleRegistryApp')
                 };
                 $scope.claimGift = function(){
                     var that = this;
-                    this.gift.post('claim',this.gift).then(function() {
-                        that.gift.showContactForm = false;
-                    }, function(err) {
-                        return err;
-                    });
+                    if(that.isRegistering)
+                    {
+                        Auth.createUser({
+                            name: that.contactForm.$data.Name,
+                            email: that.contactForm.$data.Email,
+                            password: that.contactForm.$data.Password
+                        })
+                        .then( function() {
+                            that.gift.owner.user = $rootScope.currentUser.id;
+                            that.gift.post('claim',that.gift).then(function() {
+                                that.showContactForm = false;
+                            }, function(err) {
+                                return err;
+                            });
+                        })
+                        .catch( function(err) {
+                                err = err.data;
+                                $scope.errors = '';
+
+                                angular.forEach(err.errors, function(error, field) {
+                                    $scope.errors+= error.message + '<br/>';
+                                });
+                        })
+                    }
+                    that.showContactForm = false;
                 };
                 $scope.deleteGift = function(){
                     var that = this;
@@ -47,6 +68,13 @@ angular.module('simpleRegistryApp')
                     });
 
                 };
+                $scope.tryRegister = function(pwData)
+                {
+                    if(this.$parent.isRegistering)
+                    {
+                        return pwData === undefined ? 'Password must not be empty!' : null;
+                    }
+                }
             },
             link: function (scope, element, attrs) {
                 scope.toggleMenu = function () {
@@ -86,14 +114,18 @@ angular.module('simpleRegistryApp')
                 };
                 scope.checkForUser = function(event){
                     if(!$rootScope.currentUser){
-                        this.gift.tryRegister = true;
+                        this.contactForm.$show();
+                        //this.gift.owner = {};
+                        this.showContactForm = true;
                     }
                 };
                 $(element).on('click', '.buttonPaneChange', function(event){
+                    //TODO clean this shit up
                     var giftbox = $(event.currentTarget).closest('.giftbox');
                     $timeout(function(){
-                        giftbox.css('height', (70 + giftbox.find('.activePane .gift').outerHeight()));
-                    },0);
+                        var activePane = giftbox.find('.activePane');
+                        giftbox.css('height', (20 + $(activePane[activePane.length-1]).outerHeight()));
+                    },20);
 
                 });
             }
