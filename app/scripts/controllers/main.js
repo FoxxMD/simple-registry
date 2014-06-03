@@ -16,8 +16,7 @@ angular.module('simpleRegistryApp')
                         case 'All':
                             return true;
                         case 'Yours':
-                            if (!gift.isClaimed) {
-                                //TODO make this work once user actually works
+                            if (gift.isClaimed) {
                                 return gift.owner.user == $rootScope.currentUser.id;
                             }
                             else {
@@ -90,13 +89,13 @@ angular.module('simpleRegistryApp')
 
                     }
                 };
-                $(element).on('click', '.initialButton', function (event) {
+                $(element).on('mousedown', '.initialButton', function (event) {
                     var giftbox = $(event.currentTarget).closest('.giftbox');
                     if(giftbox.attr('style')) {
                         giftbox.removeAttr('style');
                     }
                     else {
-                        giftbox.css('height', (giftbox.height() + giftbox.find('.gift').outerHeight()));
+                        giftbox.css('height', (giftbox.height() + giftbox.find('.activePane').outerHeight()));
                     }
                 });
                 scope.createGift = function(){
@@ -113,10 +112,19 @@ angular.module('simpleRegistryApp')
                     });
                 };
                 scope.checkForUser = function(event){
+                    //TODO refactor into claimGift
                     if(!$rootScope.currentUser){
                         this.contactForm.$show();
-                        //this.gift.owner = {};
                         this.showContactForm = true;
+                    }
+                    else{
+                        this.gift.owner = {};
+                        this.gift.owner.user = $rootScope.currentUser.id;
+                        this.gift.post('claim',this.gift).then(function() {
+                        }, function(err) {
+                            console.log(err);
+                            return err;
+                        });
                     }
                 };
                 $(element).on('click', '.buttonPaneChange', function(event){
