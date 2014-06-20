@@ -18,51 +18,17 @@
                        ng-click="selectedFilter = 'Unclaimed'" href="#">Unclaimed</a><br/>
                 </div>
                 <ul class="list-unstyled">
-                    <li ng-if="isAdmin" ng-class="{'expanded': newGiftForm.$visible}" class="giftbox creationBox">
-                        <form editable-form name="newGiftForm" onbeforesave="createGift()">
-
-                            <button type="button" ng-click="newGiftForm.$show()"
-                                    class="btn btn-primary initialButton new">
-                                <span editable-text="newGiftForm.name" e-name="name" e-required e-placeholder="Title">Create New Item</span>
-                                <i class="fa fa-plus-square fa-3x"></i></button>
-                            <div class="gift-content activePane">
-                                <div class="gift" style="margin-top:70px">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <span class="lead" editable-textarea="newGiftForm.description" e-cols="100%"
-                                                  e-required
-                                                  e-name="description"
-                                                  e-placeholder="Description">{{newGiftForm.description}}
-                                                </span>
-                                        </div>
-                                        <div class="col-md-12" style="margin-top:20px;">
-                                            <span editable-url="newGiftForm.url" e-name="url" e-required
-                                                  e-placeholder="URL"></span>
-                                          <span class="pull-right" ng-show="newGiftForm.$visible">
-                                            <button type="submit" class="btn btn-primary"
-                                                    ng-disabled="newGiftForm.$waiting">
-                                                Save
-                                            </button>
-                                            <button type="button" class="btn btn-default"
-                                                    ng-disabled="newGiftForm.$waiting"
-                                                    ng-click="newGiftForm.$cancel()">
-                                                Cancel
-                                            </button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                    <li ng-if="isAdmin" class="giftbox creationBox">
+                        <button type="button" ng-click="createGift()" class="btn btn-primary button-clone new">Create New Item <i class="fa fa-plus-square fa-3x"></i></button>
                     </li>
                     <li class="giftbox" ng-repeat="gift in gifts | filter:giftFilter">
-                        <form editable-form name="giftForm" onaftersave="saveGift()">
-                            <button type="button" class="btn btn-primary initialButton">
+                        <form editable-form name="giftForm" onaftersave="saveGift()" oncancel="onGiftFormCancel()">
+                            <button type="button" class="btn btn-primary initialButton" ng-init="openOnCreate()">
                                 <h4 class="pull-left"
                                     editable-text="gift.name"
-                                    e-name="name" e-required>
+                                    e-name="name" e-required e-placeholder="Item Name">
                                     {{gift.name || 'empty name'}}</h4>
-                                <h4 ng-show="gift.isClaimed && !showContactForm" class="pull-right"> Claimed</h4>
+                                <h4 ng-show="gift.isClaimed && !showContactForm" class="pull-right">Claimed</h4>
                             </button>
                             <div ng-class="{'activePane': !showContactForm}" class="gift-content">
                                 <div class="gift">
@@ -73,12 +39,10 @@
                                         <div class="col-md-12">
                                             <p class="lead" editable-textarea="gift.description" e-cols="100%"
                                                e-required
-                                               e-name="description">{{gift.description}}</p>
+                                               e-name="description" e-placeholder="Item Description">{{gift.description}}</p>
                                         </div>
                                         <div class="col-md-12" style="margin-top:20px;">
-                                            <h4 class="pull-left"><a target="_blank" ng-href="{{gift.url}}"
-                                                                     editable-url="gift.url">See The
-                                                Product</a></h4>
+                                            <h4 class="pull-left"><a target="_blank" ng-href="{{gift.url}}" editable-url="gift.url" e-placeholder="Item URL (optional)">{{ gift.url !== undefined ? 'See The Product' : ''}}</a></h4>
                                             <span class="pull-right" ng-show="!giftForm.$visible">
                                             <button type="button" ng-show="gift.owner == undefined && isAdmin"
                                                     ng-click="deleteGift()"
