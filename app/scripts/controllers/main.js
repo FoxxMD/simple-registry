@@ -110,7 +110,7 @@ angular.module('simpleRegistryApp')
                         giftbox.removeAttr('style');
                     }
                     else {
-                        giftbox.css('height', (giftbox.height() + giftbox.find('.activePane').outerHeight()));
+                        giftbox.css('height', (/*giftbox.height()*/ + giftbox.find('.activePane').outerHeight()));
                     }
                 }
 
@@ -128,7 +128,7 @@ angular.module('simpleRegistryApp')
                         $timeout(function () {
                             //TODO make this work with expandGift. Right now angular animation classes conflict with expandGift functionality.
                             var newGift = $(element).find('li.giftbox:nth-child(2)');
-                            newGift.css('height', (newGift.height() + newGift.find('.activePane').outerHeight()));
+                            newGift.css('height', (/*newGift.height()*/ + newGift.find('.activePane').outerHeight()));
                         }, 200);
                     }
                 };
