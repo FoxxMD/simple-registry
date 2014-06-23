@@ -1,6 +1,8 @@
 # simple-registry
 ### A simple gift registry for your guests
 
+####[See the demo here](http://simple-registry.herokuapp.com/)
+
 # Why?
 
 Because my friend Patrick didn't want to pay to use other online registry services and asked me "can't you just make one for me?". 
