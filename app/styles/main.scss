@@ -88,10 +88,6 @@ body {
     border-bottom: 0;
   }
 }
-.topFilter{
-  position:fixed;
-  left:35%;
-}
 
 .giftbox {
   overflow: hidden;
@@ -154,10 +150,35 @@ body {
     }
   }
 }
-.menuButton{
+.topNav{
+  position:fixed;
+  width:100%;
+  z-index:999;
+  background-color:#428BCA;//#eb7c46;
+  min-height:60px;
+  .menuButton{
+  color:white;
   margin: 10px 0px 0px 15px;
   position:fixed;
+  left:0;
+    &:hover{
+      color:darken(white,20%);
+    }
 }
+  .btn-group-justified .btn-group .btn{
+    height:60px;
+    border-radius:0;
+    border:1px #428BCA solid;
+    background-color:#428BCA;
+    color:white;
+    font-weight:bold;
+    &:hover,
+    &.active{
+      background-color:darken(#428BCA,10%)
+    }
+  }
+}
+
 .itemContainer{
   position:relative;
 }
