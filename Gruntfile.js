@@ -342,6 +342,12 @@ module.exports = function (grunt) {
             'images/{,*/}*.{webp}',
             'fonts/**/*'
           ]
+        },{
+            expand:true,
+            cwd: '<%= yeoman.app %>',
+            dest:'<%= yeoman.dist %>/public/fonts',
+            flatten:true,
+            src:['bower_components/font-awesome/fonts/*']
         }, {
           expand: true,
           dot: true,
